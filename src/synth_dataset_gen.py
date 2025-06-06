@@ -126,14 +126,7 @@ def generate_dataset():
     os.makedirs(DATASET_FOLDER, exist_ok=True)
 
     # Generate filename
-    output_filename = os.path.join(
-        DATASET_FOLDER,
-        f"synth_seq2seq_"
-        f"in2_"
-        f"out{MIN_OUTPUT_LEN}-{MAX_OUTPUT_LEN}_"
-        f"r{INPUT_TOKEN_MIN}-{INPUT_TOKEN_MAX}_"
-        f"n{NUM_SAMPLES_TO_GENERATE}.csv",
-    )
+    output_filename = os.path.join(DATASET_FOLDER, "dataset.csv")
 
     # Save dataset
     df.to_csv(output_filename, index=False)

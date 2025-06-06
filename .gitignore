@@ -29,4 +29,4 @@ models/*
 
 # ignore large datasets
 Datasets/*
-!Datasets/dataset.csv
+!Datasets/synth_seq2seq_in2_out1-9_r1-20_n5000.csv
