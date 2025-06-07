@@ -195,4 +195,54 @@ logits = torch.stack(step_logits, dim=1).max(dim=1).values  # (B, |V|)
 
 ### Installation
 
+```bash
+pip install -r requirements.txt
 ```
+
+### Generate Synthetic Dataset
+
+```bash
+python src/synth_dataset_gen.py
+```
+
+This creates a synthetic dataset with learnable patterns including:
+- Fibonacci-like sequences
+- Arithmetic progressions  
+- Geometric patterns
+- Digit expansions
+- Modular arithmetic
+
+### Train Models
+
+```bash
+# Train MLP model
+python src/mlp.py
+
+# Train LSTM model  
+python src/lstm.py
+
+# Train Transformer model
+python src/transformer.py
+```
+
+### Configuration
+
+Key hyperparameters (configurable in each model file):
+
+```python
+BATCH_SIZE = 64
+EPOCHS = 10
+LEARNING_RATE = 1e-4
+D_MODEL = 1024
+NUM_INPUTS = 2      # Number of input tokens
+NUM_OUTPUTS = 9     # Number of output predictions
+DROPOUT = 0.2
+BETA_FN = 3.0       # False negative penalty weight
+```
+
+## 📊 Training & Evaluation
+
+### Metrics
+- **Precision**: True positives / (True positives + False positives)
+- **Recall**: True positives / (True positives + False negatives) 
+- **Loss**: Weighted BCE loss with higher penalty for false negatives
