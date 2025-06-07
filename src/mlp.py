@@ -21,11 +21,11 @@ from sklearn.model_selection import train_test_split
 DATA_PATH = "Datasets/dataset.csv"
 
 BATCH_SIZE = 64
-EPOCHS = 10
+EPOCHS = 50
 LEARNING_RATE = 1e-4
 D_MODEL = 1024
 NUM_INPUTS = 2
-NUM_OUTPUTS = 6
+NUM_OUTPUTS = 9
 DROPOUT = 0.2
 PAD_TOKEN, UNK_TOKEN, BOS_TOKEN, EOS_TOKEN = "<pad>", "<unk>", "<bos>", "<eos>"
 

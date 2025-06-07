@@ -32,7 +32,7 @@ EPOCHS = 10
 LEARNING_RATE = 1e-4
 D_MODEL = 1024
 NUM_INPUTS = 2
-NUM_OUTPUTS = 6
+NUM_OUTPUTS = 9
 DROPOUT = 0.2
 PAD_TOKEN, UNK_TOKEN, BOS_TOKEN, EOS_TOKEN = "<pad>", "<unk>", "<bos>", "<eos>"
 
@@ -213,7 +213,7 @@ class TransformerSetDecoder(nn.Module):
         nhead: int = 8,
         num_layers: int = 2,
         p_drop: float = 0.2,
-        num_outputs: int = 6,
+        num_outputs: int = 9,
     ):
         super().__init__()
         self.src_embed = nn.Embedding(

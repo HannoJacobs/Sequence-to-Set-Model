@@ -26,7 +26,7 @@ EPOCHS = 10
 LEARNING_RATE = 1e-4
 D_MODEL = 1024
 NUM_INPUTS = 2
-NUM_OUTPUTS = 6
+NUM_OUTPUTS = 9
 DROPOUT = 0.2
 PAD_TOKEN, UNK_TOKEN, BOS_TOKEN, EOS_TOKEN = "<pad>", "<unk>", "<bos>", "<eos>"
 
@@ -184,7 +184,7 @@ class LSTMSetDecoder(nn.Module):
         hid_dim: int = 512,
         num_layers: int = 1,
         p_drop: float = 0.2,
-        num_outputs: int = 6,
+        num_outputs: int = 9,
     ):
         super().__init__()
         # Embedding layers for input and output tokens
