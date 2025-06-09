@@ -245,45 +245,43 @@ class TransformerSetDecoder(nn.Module):
         return torch.triu(torch.ones(sz, sz, dtype=torch.bool, device=device), 1)
 
     def forward(self, src: torch.Tensor) -> torch.Tensor:
-        """
-        Args
-        ----
-        src: LongTensor  (B, 2)
-
-        Returns
-        -------
-        logits: FloatTensor (B, |V|)  – max-pooled set scores
-        """
         B = src.size(0)
 
-        # ---------- Encoder ----------
+        # Encode the two input tokens into contextualized representations
         src_emb = self.pos_enc(self.dropout(self.src_embed(src)))  # (B,2,E)
-        memory = self.encoder(src_emb)  # (B,2,E)
+        memory = self.encoder(src_emb)  # (B,2,E) - contextualized input representations
 
-        # ---------- Greedy autoregressive decoding ----------
-        step_logits = []
+        # Autoregressively decode num_outputs output tokens
+        step_logits = []  # Will collect logits for each decoding step
         next_tok = torch.full(
             (B, 1), self.bos_idx, dtype=torch.long, device=src.device
-        )  # (B,1)
+        )  # (B,1) - start with BOS token
 
         for _ in range(self.num_outputs):
+            # Embed current sequence of decoder tokens and add positional encoding
             tgt_emb = self.pos_enc(self.dropout(self.tgt_embed(next_tok)))  # (B,t,E)
+            # Create causal mask to prevent attention to future tokens
             tgt_mask = self._subsequent_mask(
                 tgt_emb.size(1), device=src.device
             )  # (t,t)
+            # Decode using cross-attention to encoder memory and self-attention within decoder
             out = self.decoder(
                 tgt=tgt_emb,
                 memory=memory,
                 tgt_mask=tgt_mask,
             )  # (B,t,E)
-            this_step = out[:, -1, :]  # last token
-            logit = self.proj(this_step)  # (B,|V|)
+            this_step = out[:, -1, :]  # (B,E) - take the last token's representation
+            logit = self.proj(this_step)  # (B,|V|) - logits for all output tokens
             step_logits.append(logit)
+            # Greedy: feed back top prediction for next decoding step
             next_tok = torch.cat(
                 [next_tok, logit.argmax(dim=-1, keepdim=True)], dim=1
-            )  # append token: for autoregressive training
+            )  # append token for autoregressive decoding
 
-        # ---------- Order-invariant set pooling ----------
+        # stack & pool → (B, NUM_OUTPUTS, |V|) → (B, |V|)
+        # Max-pool across decoding steps: for each output token, take the maximum logit
+        # seen at any step. This removes output position information and enables
+        # set-based (multi-label) prediction.
         logits = torch.stack(step_logits, dim=1).max(dim=1).values  # (B, |V|)
         return logits
 
