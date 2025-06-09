@@ -1,14 +1,11 @@
 """Generate a synthetic seq2seq dataset with learnable patterns"""
 
 import os
-import sys
 import time
 import random
 
 import numpy as np
 import pandas as pd
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
 # Configuration
 INPUT_TOKEN_MIN = 1

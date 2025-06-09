@@ -21,7 +21,7 @@ from sklearn.model_selection import train_test_split
 DATA_PATH = "Datasets/dataset.csv"
 
 BATCH_SIZE = 64
-EPOCHS = 50
+EPOCHS = 10
 LEARNING_RATE = 1e-4
 D_MODEL = 1024
 NUM_INPUTS = 2
